@@ -70,7 +70,7 @@ const UserModel = {
 
   getAll() {
     const res = stmts.getAll.all() as UserRow[];
-    const allUsers = res.map(user => mapUser(user));
+    const allUsers = res.map((user) => mapUser(user));
     return allUsers;
   },
 

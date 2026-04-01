@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserModel, User } from '../models/user.ts';
+import { UserModel } from '../models/user.ts';
 
 // Create a new user
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
@@ -24,7 +24,7 @@ export const getAllUsers = (
   } catch (error) {
     next(error);
   }
-}
+};
 
 // get user by userID
 export const getUserByID = (
@@ -38,7 +38,7 @@ export const getUserByID = (
     if (!user) {
       res.status(404).json({ message: 'User not found' });
       return;
-    } 
+    }
     res.status(200).json(user);
   } catch (error) {
     next(error);
@@ -46,11 +46,7 @@ export const getUserByID = (
 };
 
 // update user's name
-export const updateUser = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(req.params.id as string, 10);
     const { name } = req.body;
@@ -66,11 +62,7 @@ export const updateUser = (
 };
 
 // delete user
-export const deleteUser = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(req.params.id as string, 10);
     const user = UserModel.delete(id);

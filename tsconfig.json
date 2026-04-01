@@ -3,6 +3,6 @@
     "types": ["jest"],
     "noEmit": true,
     "allowImportingTsExtensions": true,
-    "esModuleInterop": true,
-  },
+    "esModuleInterop": true
+  }
 }

@@ -27,7 +27,7 @@ function initializeSchema() {
   console.log('Database schema initialized');
 }
 
-// 
+//
 const migrations: Record<number, MigrationType> = {
   1: () => initializeSchema(),
 };
@@ -41,9 +41,12 @@ export function runMigrations() {
   );
 
   // get the current max version
-  const currentVersionResult = db.prepare('SELECT MAX(version) as v FROM _migrations').get();
-  const currentVersion = (currentVersionResult as { v: number } | undefined)?.v || 0;
-  
+  const currentVersionResult = db
+    .prepare('SELECT MAX(version) as v FROM _migrations')
+    .get();
+  const currentVersion =
+    (currentVersionResult as { v: number } | undefined)?.v || 0;
+
   // sort versions
   const versions = Object.keys(migrations)
     .map(Number)
@@ -56,7 +59,7 @@ export function runMigrations() {
     }
 
     console.log(`Running migration ${version}...`);
-      
+
     try {
       // Run the migration inside a transaction for safety
       const migrationTx = db.transaction(() => {
@@ -64,7 +67,7 @@ export function runMigrations() {
         db.prepare('INSERT INTO _migrations (version) VALUES (?)').run(version);
       });
       migrationTx();
-      
+
       console.log(`Migration ${version} completed.`);
     } catch (error) {
       console.error(`Migration ${version} failed:`, error);
