@@ -1,6 +1,7 @@
 {
-  "name": "manga-tracker",
+  "name": "@manga-tracker/server",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "build": "tsc",
@@ -9,7 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "author": "Nicholas Tanaka",
+  "author": "MigrainePanda",
   "license": "MIT",
   "description": "Track what manga you own",
   "devDependencies": {
