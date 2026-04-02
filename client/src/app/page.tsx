@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-
 import handleRequest from '@/lib/apiUtils';
+
 import Navbar from '@/components/layout/navbar';
+import EntryList from '@/components/entry-list';
 
 import { UserType } from '@models/user';
 
@@ -26,18 +27,11 @@ export default function Home() {
       <div className="flex items-center justify-center py-5 bg-blue-950">
         <Navbar />
       </div>
-      <div className="flex grow flex-col items-center justify-center p-5">
+      <div className="flex grow flex-col items-center justify-center p-5 gap-5">
         <button onClick={handleClick} className="cursor-pointer">
           fkjsklfjsdkl
         </button>
-        {options.length > 0 &&
-          options.map(function (option: UserType, i) {
-            return (
-              <p key={i}>
-                {option.username}|{option.name}
-              </p>
-            );
-          })}
+        <EntryList entries={options} />
       </div>
     </main>
   );
