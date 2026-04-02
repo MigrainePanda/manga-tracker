@@ -1,7 +1,7 @@
 import db from '../database/db.js';
 
 // main User type
-interface User {
+interface UserType {
   id: number;
   username: string;
   name: string;
@@ -19,7 +19,7 @@ interface UserRow {
 }
 
 // Helper to convert SQLite row to JS object with parsed dates
-export function mapUser(row: UserRow | undefined): User | undefined {
+export function mapUser(row: UserRow | undefined): UserType | undefined {
   if (!row) return undefined;
   return {
     id: row.id,
@@ -90,6 +90,6 @@ const UserModel = {
   },
 };
 
-export type { User };
+export type { UserType };
 
 export { UserModel };
