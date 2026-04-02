@@ -1,7 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.API_URL || 'http://localhost:3001',
+  baseURL: process.env.API_URL || 'http://localhost:3001/api',
   withCredentials: true,
 });
 
@@ -87,29 +87,30 @@ const handleRequest = async (
       responseBody.message = response.data.message;
     }
     return responseBody;
-  } catch (e) {
-    // defines global response behaviors for errors so our application's API calls can be coded with reduced repitition
-    // if (e.response) {
-    //   if (e.response.status === 401 && reactOpts.overrideRedirect !== true) {
-    //     reactOpts.dispatch(logout());
-    //     reactOpts.navigate(`/login?redirect=${location.pathname}`);
-    //   } else if (e.response.status === 403) {
-    //     reactOpts.navigate(`/`);
-    //   }
-    //   return {
-    //     message: e.response.data.error,
-    //     data: e.response.data,
-    //     status: e.response.status,
-    //     error: true,
-    //   };
-    // } else {
+  } catch (e: unknown) {
+    const err = e as AxiosError;
+    if (err.response) {
+      // format data into readable text rather than html
+      const data = err.response.data as string;
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data, 'text/html');
+      // Try common error containers
+      const pre = doc.querySelector('pre');
+      const errorDiv = doc.querySelector('.error, .message, #error');
+
+      return {
+        message: err.response.statusText,
+        data: pre?.textContent || errorDiv?.textContent || data,
+        status: err.response.status,
+        error: true,
+      };
+    }
     return {
       data: {},
       status: 500,
       error: true,
       message: 'An unexpected error occurred. Please try again later.',
     };
-    // }
   }
 };
 

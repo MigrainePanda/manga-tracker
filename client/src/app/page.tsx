@@ -12,9 +12,13 @@ export default function Home() {
 
   const handleClick = async () => {
     setOptions([]);
-    const res = await handleRequest('GET', 'api/users');
+    const res = await handleRequest('GET', '/users');
     console.log(res);
-    setTimeout(() => setOptions(res.data as UserType[]), 1000);
+    setTimeout(() => {
+      if (res.status === 200) {
+        setOptions(res.data as UserType[]);
+      }
+    }, 1000);
   };
 
   return (
@@ -26,13 +30,14 @@ export default function Home() {
         <button onClick={handleClick} className="cursor-pointer">
           fkjsklfjsdkl
         </button>
-        {options.map(function (option: UserType, i) {
-          return (
-            <p key={i}>
-              {option.username}|{option.name}
-            </p>
-          );
-        })}
+        {options.length > 0 &&
+          options.map(function (option: UserType, i) {
+            return (
+              <p key={i}>
+                {option.username}|{option.name}
+              </p>
+            );
+          })}
       </div>
     </main>
   );
