@@ -6,20 +6,21 @@ import handleRequest from '@/lib/apiUtils';
 import Navbar from '@/components/layout/navbar';
 import EntryList from '@/components/entry-list';
 
-import { UserType } from '@models/user';
+import { MangaType } from '@models/manga';
 
 export default function Home() {
-  const [options, setOptions] = useState<UserType[]>([]);
+  const [options, setOptions] = useState<MangaType[]>([]);
 
   const handleClick = async () => {
     setOptions([]);
-    const res = await handleRequest('GET', '/users');
+    const res = await handleRequest('GET', '/manga');
     console.log(res);
     setTimeout(() => {
       if (res.status === 200) {
-        setOptions(res.data as UserType[]);
+        const data = res.data as MangaType[];
+        setOptions(data);
       }
-    }, 1000);
+    }, 500);
   };
 
   return (

@@ -14,7 +14,7 @@ function initializeSchema() {
     )
   `);
 
-  // Posts table (example relationship)
+  // Manga table
   db.exec(`
     CREATE TABLE IF NOT EXISTS manga (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

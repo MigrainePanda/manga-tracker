@@ -1,7 +1,7 @@
-import { UserType } from '@models/user';
+import { MangaType } from '@models/manga';
 
 type EntryListProps = {
-  entries: UserType[];
+  entries: MangaType[];
 };
 
 const EntryList = ({ entries }: EntryListProps) => {
@@ -9,10 +9,10 @@ const EntryList = ({ entries }: EntryListProps) => {
     <>
       <div className="">
         {entries.length > 0 &&
-          entries.map(function (entry: UserType, i: number) {
+          entries.map(function (entry: MangaType, i: number) {
             return (
               <p key={i} className="py-0.5">
-                {entry.username}|{entry.name}
+                {entry.id} | {entry.title}
               </p>
             );
           })}

@@ -3,3 +3,6 @@ node_modules
 
 # database
 server/src/database/database.*
+
+# anilist schema
+server/src/services/schema.json
