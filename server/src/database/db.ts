@@ -1,7 +1,12 @@
 import Database from 'better-sqlite3';
 import config from '../config/config.ts';
 
-const db = new Database(config.dbPath, {});
-db.pragma('journal_mode = WAL');
+let db: Database.Database;
 
-export default db;
+export function getDb(): Database.Database {
+  if (!db) {
+    db = new Database(config.dbPath, {});
+    db.pragma('journal_mode = WAL');
+  }
+  return db;
+}

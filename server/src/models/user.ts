@@ -1,4 +1,4 @@
-import db from '../database/db.js';
+import { getDb } from '../database/db';
 
 // main User type
 interface UserType {
@@ -10,7 +10,7 @@ interface UserType {
 }
 
 // result directly from table
-interface UserRow {
+interface UserDBRow {
   id: number;
   username: string;
   name: string;
@@ -19,45 +19,25 @@ interface UserRow {
 }
 
 // Helper to convert SQLite row to JS object with parsed dates
-export function mapUser(row: UserRow | undefined): UserType | undefined {
-  if (!row) return undefined;
+const mapDBRowToType = (dbRow: UserDBRow): UserType => {
   return {
-    id: row.id,
-    username: row.username,
-    name: row.name,
-    created_at: new Date(row.created_at),
-    updated_at: new Date(row.updated_at),
+    ...dbRow,
+    created_at: new Date(dbRow.created_at),
+    updated_at: new Date(dbRow.updated_at),
   };
-}
-
-// sql statements
-const stmts = {
-  insert: db.prepare<{ username: string; name: string }>(`
-    INSERT INTO users (username, name) VALUES (:username, :name)
-  `),
-
-  getAll: db.prepare(`
-    SELECT * from users ORDER BY created_at DESC
-  `),
-
-  findById: db.prepare<{ id: number }>(`
-    SELECT * FROM users WHERE id = :id
-  `),
-
-  update: db.prepare<{ id: number; name?: string }>(`
-    UPDATE users SET name = :name, updated_at = CURRENT_TIMESTAMP 
-    WHERE id = :id
-  `),
-
-  delete: db.prepare<{ id: number }>(`
-    DELETE FROM users WHERE id = :id
-  `),
 };
+
+const DB_NAME = 'users';
 
 // model to interact with
 const UserModel = {
   create(username: string, name: string) {
-    const info = stmts.insert.run({
+    const db = getDb();
+    const stmt = db.prepare<{
+      username: string;
+      name: string;
+    }>(`INSERT INTO ${DB_NAME} (username, name) VALUES (:username, :name)`);
+    const info = stmt.run({
       username: username,
       name: name,
     });
@@ -69,24 +49,39 @@ const UserModel = {
   },
 
   getAll() {
-    const res = stmts.getAll.all() as UserRow[];
-    const allUsers = res.map((user) => mapUser(user));
+    const db = getDb();
+    const stmt = db.prepare(
+      `SELECT * from ${DB_NAME} ORDER BY created_at DESC`,
+    );
+    const rows = stmt.all() as UserDBRow[];
+    const allUsers = rows.map((user) => mapDBRowToType(user));
     return allUsers;
   },
 
   getById(id: number) {
-    const res = stmts.findById.get({ id }) as UserRow;
-    const user = mapUser(res);
+    const db = getDb();
+    const stmt = db.prepare(`SELECT * FROM ${DB_NAME} WHERE id = :id`);
+    const rows = stmt.get({ id }) as UserDBRow;
+    const user = mapDBRowToType(rows);
     return user;
   },
 
   update(id: number, name: string) {
-    stmts.update.run({ id, name });
+    const db = getDb();
+    const stmt = db.prepare<{ id: number; name?: string }>(`
+      UPDATE ${DB_NAME} SET name = :name, updated_at = CURRENT_TIMESTAMP 
+      WHERE id = :id
+    `);
+    stmt.run({ id, name });
     return this.getById(id);
   },
 
   delete(id: number) {
-    stmts.delete.run({ id });
+    const db = getDb();
+    const stmt = db.prepare<{ id: number; name?: string }>(
+      `DELETE FROM ${DB_NAME} WHERE id = :id`,
+    );
+    stmt.run({ id });
   },
 };
 

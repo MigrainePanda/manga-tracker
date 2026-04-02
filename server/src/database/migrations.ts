@@ -1,6 +1,8 @@
-import db from '../database/db.js';
+import { getDb } from './db';
 
 type MigrationType = () => void;
+
+const db = getDb();
 
 function initializeSchema() {
   // Users table
@@ -18,7 +20,14 @@ function initializeSchema() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS manga (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
+      idMal INTEGER NOT NULL,
+      titles TEXT[] NOT NULL,
+      type TEXT NOT NULL,
+      format TEXT NOT NULL,
+      status TEXT NOT NULL,
+      chapters INTEGER,
+      volumes INTEGER,
+      genres TEXT[] NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
@@ -32,7 +41,7 @@ const migrations: Record<number, MigrationType> = {
   1: () => initializeSchema(),
 };
 
-export function runMigrations() {
+export async function runMigrations() {
   // ensure migration table exists
   db.exec(
     `CREATE TABLE IF NOT EXISTS _migrations (

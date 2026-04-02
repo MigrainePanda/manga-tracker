@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { MangaModel } from '../models/manga';
 
-// get manga by ID
-export const getMangaByID = (
+// get all manga
+export const getAllManga = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const id = parseInt(req.params.id as string, 10);
-    const manga = MangaModel.getById(id);
+    const manga = MangaModel.getAll();
     if (!manga) {
       res.status(404).json({ message: 'Manga not found' });
       return;
@@ -20,14 +19,15 @@ export const getMangaByID = (
   }
 };
 
-// get all manga
-export const getAllManga = (
+// get manga by ID
+export const getMangaByID = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const manga = MangaModel.getAll();
+    const id = parseInt(req.params.id as string, 10);
+    const manga = MangaModel.getById(id);
     if (!manga) {
       res.status(404).json({ message: 'Manga not found' });
       return;

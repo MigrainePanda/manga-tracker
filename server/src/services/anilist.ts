@@ -1,7 +1,7 @@
 import config from '../config/config';
 
 const receivedData = `
-  id
+  idMal
   title {
     romaji
     english
