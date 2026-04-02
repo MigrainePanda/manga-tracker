@@ -7,6 +7,7 @@ interface Config {
   nodeEnv: string;
   dbPath: string;
   corsOptions: object;
+  ANILIST_API_URL: string;
 }
 
 const config: Config = {
@@ -20,6 +21,7 @@ const config: Config = {
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
   },
+  ANILIST_API_URL: process.env.ANILIST_API_URL || 'https://graphql.anilist.co',
 };
 
 export default config;
