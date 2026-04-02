@@ -71,9 +71,9 @@ const sendRequest = async (
 const handleRequest = async (
   method: 'GET' | 'POST' | 'PUT' | 'DELETE', // | 'PATCH' | 'HEAD' | 'OPTIONS'
   route: string,
-  reactOpts?: AxiosRequestConfig,
   body?: unknown,
   params?: Record<string, string | number | boolean>,
+  _reactOpts?: AxiosRequestConfig,
 ): Promise<responseType> => {
   try {
     const response = await sendRequest(method, route, body, params);

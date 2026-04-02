@@ -7,7 +7,14 @@ interface MangaType extends MangaNonDate {
 
 interface MangaNonDate {
   id: number;
-  title: string;
+  idMal: number;
+  titles: string[];
+  type: string;
+  format: string;
+  status: string;
+  chapters: number | null;
+  volumes: number | null;
+  genres: string[];
 }
 
 interface MangaDBRow extends MangaNonDate {
@@ -51,6 +58,59 @@ const MangaModel = {
     }
     const manga: MangaType = mapDBRowToType(dbRow);
     return manga;
+  },
+
+  create(
+    idMal: number,
+    titles: string[],
+    type: string,
+    format: string,
+    status: string,
+    chapters: number | null,
+    volumes: number | null,
+    genres: string[],
+  ) {
+    const db = getDb();
+    const query = `INSERT INTO ${DB_NAME} (
+      idMal, 
+      titles, 
+      type, 
+      format, 
+      status, 
+      chapters, 
+      volumes, 
+      genres
+    ) VALUES (
+      :idMal, 
+      :titles, 
+      :type, 
+      :format, 
+      :status, 
+      :chapters, 
+      :volumes, 
+      :genres
+    )`;
+    const stmt = db.prepare<{
+      idMal: number;
+      titles: string[];
+      type: string;
+      format: string;
+      status: string;
+      chapters: number | null;
+      volumes: number | null;
+      genres: string[];
+    }>(query);
+    const info = stmt.run({
+      idMal,
+      titles,
+      type,
+      format,
+      status,
+      chapters,
+      volumes,
+      genres,
+    });
+    console.log(info);
   },
 };
 

@@ -37,3 +37,28 @@ export const getMangaByID = (
     next(error);
   }
 };
+
+// create manga entry
+export const createMangaEntry = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { idMal, titles, type, format, status, chapters, volumes, genres } =
+      req.body;
+    const mangaEntry = MangaModel.create(
+      idMal,
+      titles,
+      type,
+      format,
+      status,
+      chapters,
+      volumes,
+      genres,
+    );
+    res.status(201).json(mangaEntry);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -11,9 +11,16 @@ const EntryList = ({ entries }: EntryListProps) => {
         {entries.length > 0 &&
           entries.map(function (entry: MangaType, i: number) {
             return (
-              <p key={i} className="py-0.5">
-                {entry.id} | {entry.title}
-              </p>
+              <div key={i} className="py-0.5">
+                <p>ID: {entry.idMal}</p>
+                <p>Type: {entry.type}</p>
+                <p>Format: {entry.format}</p>
+                <p>Status: {entry.status}</p>
+                <p>Chapters: {entry.chapters ?? 'N/A'}</p>
+                <p>Volumes: {entry.volumes ?? 'N/A'}</p>
+                <p>Titles: {entry.titles}</p>
+                <p>Genres: {entry.genres}</p>
+              </div>
             );
           })}
       </div>
