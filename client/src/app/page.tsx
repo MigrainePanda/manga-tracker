@@ -5,7 +5,7 @@ import { useState } from 'react';
 import handleRequest from '@/lib/apiUtils';
 import Navbar from '@/components/layout/navbar';
 
-import { UserType } from '../../../server/src/models/user';
+import { UserType } from '@models/user';
 
 export default function Home() {
   const [options, setOptions] = useState<UserType[]>([]);
