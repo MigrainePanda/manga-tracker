@@ -1,16 +1,10 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { APIResponseType } from '@shared/types';
 
 const axiosInstance = axios.create({
   baseURL: process.env.API_URL || 'http://localhost:3001/api',
   withCredentials: true,
 });
-
-interface responseType {
-  data: unknown;
-  status: number;
-  error: boolean;
-  message: string;
-}
 
 const getRequest = async (
   route: string,
@@ -73,11 +67,10 @@ const handleRequest = async (
   route: string,
   body?: unknown,
   params?: Record<string, string | number | boolean>,
-  _reactOpts?: AxiosRequestConfig,
-): Promise<responseType> => {
+): Promise<APIResponseType> => {
   try {
     const response = await sendRequest(method, route, body, params);
-    const responseBody: responseType = {
+    const responseBody: APIResponseType = {
       data: response.data,
       status: response.status,
       error: false,

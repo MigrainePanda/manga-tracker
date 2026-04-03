@@ -6,6 +6,7 @@ import { runMigrations } from './database/migrations.ts';
 import { errorHandler } from './middlewares/errorHandler.ts';
 import mangaRoutes from './routes/mangaRoutes.ts';
 import userRoutes from './routes/userRoutes.ts';
+import anilistRoutes from './routes/anilistRoutes.ts';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors(config.corsOptions));
 // Routes
 app.use('/api/manga', mangaRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/anilist', anilistRoutes);
 
 // Global error handler (should be after routes)
 app.use(errorHandler);
