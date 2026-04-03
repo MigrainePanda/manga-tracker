@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "rootDir": "",
+    "rootDir": "..",
     "outDir": "./dist",
     "types": ["jest"],
     "strict": true,
@@ -10,7 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "@shared/*": ["../shared/*"],
+    }
   },
-  "include": ["src/**/*", "tests/**/*"]
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["../shared/**/*", "../client/**/*"]
 }

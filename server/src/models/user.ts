@@ -1,22 +1,5 @@
 import { getDb } from '../database/db';
-
-// main User type
-interface UserType {
-  id: number;
-  username: string;
-  name: string;
-  created_at: Date;
-  updated_at: Date;
-}
-
-// result directly from table
-interface UserDBRow {
-  id: number;
-  username: string;
-  name: string;
-  created_at: string;
-  updated_at: string;
-}
+import { UserType, UserDBRow } from '@shared/types';
 
 // Helper to convert SQLite row to JS object with parsed dates
 const mapDBRowToType = (dbRow: UserDBRow): UserType => {

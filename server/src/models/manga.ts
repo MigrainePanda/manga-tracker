@@ -1,26 +1,5 @@
 import { getDb } from '../database/db';
-
-interface MangaType extends MangaNonDate {
-  created_at: Date;
-  updated_at: Date;
-}
-
-interface MangaNonDate {
-  id: number;
-  idMal: number;
-  titles: string[];
-  type: string;
-  format: string;
-  status: string;
-  chapters: number | null;
-  volumes: number | null;
-  genres: string[];
-}
-
-interface MangaDBRow extends MangaNonDate {
-  created_at: string;
-  updated_at: string;
-}
+import { MangaType, MangaDBRow } from '@shared/types';
 
 const mapDBRowToType = (dbRow: MangaDBRow): MangaType => {
   return {

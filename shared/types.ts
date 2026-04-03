@@ -1,0 +1,61 @@
+export interface APIResponseType {
+  data: object[] | unknown;
+  error: boolean;
+  status: number;
+  message: string;
+}
+
+export interface AnilistSearchResultType {
+  id: number;
+  idMal: number;
+  title: {
+    romanji: string;
+    english: string;
+    native: string;
+  };
+  type: string;
+  format: string;
+  status: string;
+  chapters: number | null;
+  volumes: number | null;
+  genres: string[];
+}
+
+export interface MangaType extends MangaNonDate {
+  created_at: Date;
+  updated_at: Date;
+}
+
+interface MangaNonDate {
+  id: number;
+  idMal: number;
+  titles: string[];
+  type: string;
+  format: string;
+  status: string;
+  chapters: number | null;
+  volumes: number | null;
+  genres: string[];
+}
+
+export interface MangaDBRow extends MangaNonDate {
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserType {
+  id: number;
+  username: string;
+  name: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+// result directly from table
+export interface UserDBRow {
+  id: number;
+  username: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
