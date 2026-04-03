@@ -1,5 +1,5 @@
 import { getDb } from '../database/db';
-import { MangaType, MangaDBRow } from '@shared/types';
+import { MangaType, MangaDBRow, MangaNonDate } from '@shared/types';
 
 const mapDBRowToType = (dbRow: MangaDBRow): MangaType => {
   return {
@@ -39,55 +39,15 @@ const MangaModel = {
     return manga;
   },
 
-  create(
-    idMal: number,
-    titles: string[],
-    type: string,
-    format: string,
-    status: string,
-    chapters: number | null,
-    volumes: number | null,
-    genres: string[],
-  ) {
+  create(data: MangaNonDate) {
     const db = getDb();
-    const query = `INSERT INTO ${DB_NAME} (
-      idMal, 
-      titles, 
-      type, 
-      format, 
-      status, 
-      chapters, 
-      volumes, 
-      genres
-    ) VALUES (
-      :idMal, 
-      :titles, 
-      :type, 
-      :format, 
-      :status, 
-      :chapters, 
-      :volumes, 
-      :genres
-    )`;
-    const stmt = db.prepare<{
-      idMal: number;
-      titles: string[];
-      type: string;
-      format: string;
-      status: string;
-      chapters: number | null;
-      volumes: number | null;
-      genres: string[];
-    }>(query);
+    const query = `INSERT INTO ${DB_NAME} (idMal, titles, type, format, status, chapters, volumes, genres) 
+                   VALUES (:idMal, :titles, :type, :format, :status, :chapters, :volumes, :genres)`;
+    const stmt = db.prepare(query);
     const info = stmt.run({
-      idMal,
-      titles,
-      type,
-      format,
-      status,
-      chapters,
-      volumes,
-      genres,
+      ...data,
+      titles: JSON.stringify(data.titles),
+      genres: JSON.stringify(data.genres),
     });
     console.log(info);
   },

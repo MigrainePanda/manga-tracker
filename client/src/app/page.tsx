@@ -30,13 +30,13 @@ export default function Home() {
   async function handleClick2(): Promise<void> {
     // await handleRequest('POST', '/manga', {
     //   idMal: 100,
-    //   titles: JSON.stringify(['a', 'b', 'c']),
+    //   titles: ['a', 'b', 'c'],
     //   type: 'type',
     //   format: 'format',
     //   status: 'status',
     //   chapters: 3,
     //   volumes: 4,
-    //   genres: JSON.stringify(['e', 'f', 'g']),
+    //   genres: ['e', 'f', 'g'],
     // });
     setSearchResults([]);
     const response = await handleRequest(

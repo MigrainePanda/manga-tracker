@@ -47,16 +47,16 @@ export const createMangaEntry = (
   try {
     const { idMal, titles, type, format, status, chapters, volumes, genres } =
       req.body;
-    const mangaEntry = MangaModel.create(
-      idMal,
-      titles,
+    const mangaEntry = MangaModel.create({
+      idMal: Number(idMal),
+      titles: Array.isArray(titles) ? titles : JSON.parse(titles),
       type,
       format,
       status,
-      chapters,
-      volumes,
-      genres,
-    );
+      chapters: chapters ? Number(chapters) : null,
+      volumes: volumes ? Number(volumes) : null,
+      genres: Array.isArray(genres) ? genres : JSON.parse(genres),
+    });
     res.status(201).json(mangaEntry);
   } catch (error) {
     next(error);

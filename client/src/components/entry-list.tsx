@@ -12,7 +12,7 @@ const EntryList = ({ entries }: EntryListProps) => {
           entries.map(function (entry: MangaType, i: number) {
             return (
               <div key={i} className="py-0.5">
-                <p>ID: {entry.idMal}</p>
+                <p>MAL ID: {entry.idMal}</p>
                 <p>Type: {entry.type}</p>
                 <p>Format: {entry.format}</p>
                 <p>Status: {entry.status}</p>

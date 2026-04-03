@@ -22,12 +22,12 @@ export interface AnilistSearchResultType {
 }
 
 export interface MangaType extends MangaNonDate {
+  id: number;
   created_at: Date;
   updated_at: Date;
 }
 
-interface MangaNonDate {
-  id: number;
+export interface MangaNonDate {
   idMal: number;
   titles: string[];
   type: string;
@@ -39,6 +39,7 @@ interface MangaNonDate {
 }
 
 export interface MangaDBRow extends MangaNonDate {
+  id: number;
   created_at: string;
   updated_at: string;
 }
