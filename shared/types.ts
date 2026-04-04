@@ -9,7 +9,7 @@ export interface AnilistSearchResultType {
   id: number;
   idMal: number;
   title: {
-    romanji: string;
+    romaji: string;
     english: string;
     native: string;
   };

@@ -1,13 +1,17 @@
+import { useEffect } from 'react';
 import { MangaType } from '@models/manga';
+import { useMangaStore } from '@/store/useMangaStore';
 
-type EntryListProps = {
-  entries: MangaType[];
-};
+function LibraryList() {
+  const entries = useMangaStore((state) => state.entries);
 
-const EntryList = ({ entries }: EntryListProps) => {
+  useEffect(() => {
+    useMangaStore.getState().refreshEntries();
+  }, []);
+
   return (
     <>
-      <div className="">
+      <div className="flex grow flex-col items-center justify-start p-5 gap-5">
         {entries.length > 0 &&
           entries.map(function (entry: MangaType, i: number) {
             return (
@@ -26,6 +30,6 @@ const EntryList = ({ entries }: EntryListProps) => {
       </div>
     </>
   );
-};
+}
 
-export default EntryList;
+export default LibraryList;
