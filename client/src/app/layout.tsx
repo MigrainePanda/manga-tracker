@@ -29,12 +29,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn('font-sans', 'font-sans', inter.variable)}
+      className={cn(
+        'font-sans',
+        inter.variable,
+        geistSans.variable,
+        geistMono.variable,
+      )}
       suppressHydrationWarning
     >
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
-      >
+      <body className={`antialiased min-h-screen`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
