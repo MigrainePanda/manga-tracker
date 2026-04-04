@@ -33,7 +33,7 @@ export default function SearchResultsList() {
   }
 
   return (
-    <div className="flex grow flex-col items-start justify-start p-5 gap-5">
+    <div className="flex grow flex-col items-start justify-start p-5 gap-7">
       <form onSubmit={handleSubmit}>
         <Field>
           <FieldLabel htmlFor="input-group-search">
@@ -55,7 +55,7 @@ export default function SearchResultsList() {
           </Field>
         </Field>
       </form>
-      <div>
+      <div className="flex flex-col gap-5">
         {searchResults.length > 0 &&
           searchResults.map(function (
             entry: AnilistSearchResultType,

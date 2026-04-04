@@ -15,7 +15,18 @@ export const useMangaStore = create<MangaState>((set) => ({
   refreshEntries: async () => {
     try {
       const response = await handleRequest('GET', '/manga');
-      useMangaStore.getState().setEntries(response.data as MangaType[]);
+      const parsedData = (response.data as MangaType[]).map((item) => ({
+        ...item,
+        titles:
+          typeof item.titles === 'string'
+            ? JSON.parse(item.titles)
+            : item.titles,
+        genres:
+          typeof item.genres === 'string'
+            ? JSON.parse(item.genres)
+            : item.genres,
+      }));
+      useMangaStore.getState().setEntries(parsedData);
       console.log('Refreshed');
     } catch {
       console.error('Failed to fetch');

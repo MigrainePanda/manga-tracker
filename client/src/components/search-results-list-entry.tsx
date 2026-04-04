@@ -16,7 +16,7 @@ export default function SearchResultsListEntry({
   }
 
   return (
-    <div className="py-2">
+    <div>
       <p>ID: {entry.idMal}</p>
       <p>
         Titles: {entry.title.romaji}, {entry.title.english},{' '}
