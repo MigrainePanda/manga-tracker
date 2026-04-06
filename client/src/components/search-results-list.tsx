@@ -28,7 +28,6 @@ export default function SearchResultsList() {
       {},
       { searchStr, perPage: 5 },
     );
-    console.log(response.data);
     setSearchResults(response.data as AnilistSearchResultType[]);
   }
 

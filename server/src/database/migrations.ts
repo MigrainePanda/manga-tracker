@@ -28,6 +28,8 @@ function initializeSchema() {
       chapters INTEGER,
       volumes INTEGER,
       genres TEXT[] NOT NULL,
+      cover_image BUFFER NOT NULL,
+      mime_type TEXT NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )

@@ -3,6 +3,9 @@
 import { AnilistSearchResultType } from '@shared/types';
 import { Button } from './ui/button';
 import { useMangaStore } from '@/store/useMangaStore';
+import handleRequest from '@/lib/apiUtils';
+import Image from 'next/image';
+import { useState } from 'react';
 
 type SearchResultsListEntryProps = {
   entry: AnilistSearchResultType;
@@ -11,7 +14,25 @@ type SearchResultsListEntryProps = {
 export default function SearchResultsListEntry({
   entry,
 }: SearchResultsListEntryProps) {
-  function handleClick() {
+  const [errMsg, setErrMsg] = useState<string>('');
+
+  async function handleClick() {
+    const response = await handleRequest('POST', '/manga', {
+      idMal: entry.idMal,
+      titles: [entry.title.romaji, entry.title.english, entry.title.native],
+      type: entry.type,
+      format: entry.format,
+      status: entry.status,
+      chapters: entry.chapters,
+      volumes: entry.volumes,
+      genres: entry.genres,
+      cover_image: entry.coverImage.medium,
+      mime_type: 'image/jpeg',
+    });
+    if (response.error) {
+      console.error(response.data);
+      setErrMsg(response.data as string);
+    }
     useMangaStore.getState().refreshEntries();
   }
 
@@ -30,7 +51,16 @@ export default function SearchResultsListEntry({
         Volumes/Chapters: {entry.volumes ?? 'N/A'}/{entry.chapters ?? 'N/A'}
       </p>
       <p>Genres: {entry.genres.join(', ')}</p>
+      <Image
+        src={entry.coverImage.medium}
+        alt={`Cover of ${entry.title.romaji}`}
+        width={93}
+        height={137}
+        className="rounded-lg shadow-md"
+        unoptimized={true} // Needed for blob/data URLs
+      />
       <Button onClick={handleClick}>Add to library</Button>
+      {errMsg && <p>{errMsg}</p>}
     </div>
   );
 }

@@ -16,7 +16,9 @@ const MangaModel = {
   getAll(): MangaType[] | null {
     const db = getDb();
     const dbRows = db
-      .prepare(`SELECT * FROM ${DB_NAME} ORDER BY created_at ASC`)
+      .prepare(
+        `SELECT id, idMal, titles, type, format, status, chapters, volumes, genres FROM ${DB_NAME} ORDER BY created_at ASC`,
+      )
       .all() as MangaDBRow[] | undefined;
     if (!dbRows) {
       return null;
@@ -25,6 +27,23 @@ const MangaModel = {
       mapDBRowToType(dbRow),
     );
     return manga;
+  },
+
+  getCoverImage(id: number): {
+    cover_image: Buffer;
+    mime_type: string;
+  } | null {
+    const db = getDb();
+    const row = db
+      .prepare('SELECT cover_image, mime_type FROM manga WHERE id = :id')
+      .get({ id }) as {
+      cover_image: Buffer;
+      mime_type: string;
+    } | null;
+    if (!row) {
+      return null;
+    }
+    return row;
   },
 
   getById(id: number): MangaType | null {
@@ -41,8 +60,8 @@ const MangaModel = {
 
   create(data: MangaNonDate) {
     const db = getDb();
-    const query = `INSERT INTO ${DB_NAME} (idMal, titles, type, format, status, chapters, volumes, genres) 
-                   VALUES (:idMal, :titles, :type, :format, :status, :chapters, :volumes, :genres)`;
+    const query = `INSERT INTO ${DB_NAME} (idMal, titles, type, format, status, chapters, volumes, genres, cover_image, mime_type) 
+                   VALUES (:idMal, :titles, :type, :format, :status, :chapters, :volumes, :genres, :cover_image, :mime_type)`;
     const stmt = db.prepare(query);
     const info = stmt.run({
       ...data,

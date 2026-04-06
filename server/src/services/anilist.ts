@@ -1,4 +1,5 @@
 import config from '../config/config';
+import { AnilistSearchResultType } from '@shared/types';
 
 const receivedData = `
   idMal
@@ -13,6 +14,9 @@ const receivedData = `
   chapters
   volumes
   genres
+  coverImage {
+    medium
+  }
 `;
 
 const fetchAnilistData = async (query: string, variables: object) => {
@@ -31,8 +35,14 @@ const fetchAnilistData = async (query: string, variables: object) => {
 
   const response = await fetch(url, options);
   const data = await response.json();
-  const media = data.data.Page.media;
-  return media;
+  const media: AnilistSearchResultType[] = data.data.Page.media;
+  const res = media.map((entry: AnilistSearchResultType) => {
+    return {
+      ...entry,
+      cover_image: entry.coverImage.medium,
+    };
+  });
+  return res;
 };
 
 const fetchAnilistDataBySearchString = async (

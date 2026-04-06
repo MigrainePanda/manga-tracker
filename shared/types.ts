@@ -19,6 +19,9 @@ export interface AnilistSearchResultType {
   chapters: number | null;
   volumes: number | null;
   genres: string[];
+  coverImage: {
+    medium: string;
+  };
 }
 
 export interface MangaType extends MangaNonDate {
@@ -36,6 +39,8 @@ export interface MangaNonDate {
   chapters: number | null;
   volumes: number | null;
   genres: string[];
+  cover_image: Buffer;
+  mime_type: string;
 }
 
 export interface MangaDBRow extends MangaNonDate {
