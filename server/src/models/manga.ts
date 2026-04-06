@@ -58,6 +58,20 @@ const MangaModel = {
     return manga;
   },
 
+  getByMALId(idMal: number): MangaType | null {
+    const db = getDb();
+    const dbRow = db
+      .prepare<{
+        idMal: number;
+      }>(`SELECT * FROM ${DB_NAME} WHERE idMal = :idMal`)
+      .get({ idMal }) as MangaDBRow | undefined;
+    if (!dbRow) {
+      return null;
+    }
+    const manga: MangaType = mapDBRowToType(dbRow);
+    return manga;
+  },
+
   create(data: MangaNonDate) {
     const db = getDb();
     const query = `INSERT INTO ${DB_NAME} (idMal, titles, type, format, status, chapters, volumes, genres, cover_image, mime_type) 
@@ -69,6 +83,13 @@ const MangaModel = {
       genres: JSON.stringify(data.genres),
     });
     console.log(info);
+  },
+
+  delete(id: number): object {
+    const db = getDb();
+    const stmt = db.prepare<{ id: number }>('DELETE FROM manga where id = :id');
+    const res = stmt.run({ id });
+    return res;
   },
 };
 

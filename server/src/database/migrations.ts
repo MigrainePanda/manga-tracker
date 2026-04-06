@@ -20,7 +20,7 @@ function initializeSchema() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS manga (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      idMal INTEGER NOT NULL,
+      idMal INTEGER UNIQUE NOT NULL,
       titles TEXT[] NOT NULL,
       type TEXT NOT NULL,
       format TEXT NOT NULL,

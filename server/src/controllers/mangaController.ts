@@ -77,6 +77,16 @@ export const createMangaEntry = (
       cover_image,
       mime_type,
     } = req.body;
+    const resp = MangaModel.getByMALId(idMal);
+    if (resp) {
+      console.error(
+        `Error: Manga with MAL ID ${idMal} is already in the database`,
+      );
+      res
+        .status(409)
+        .json(`Manga with MAL ID ${idMal} is already in the database`);
+      return;
+    }
     const mangaEntry = MangaModel.create({
       idMal: Number(idMal),
       titles: Array.isArray(titles) ? titles : JSON.parse(titles),
@@ -90,6 +100,24 @@ export const createMangaEntry = (
       mime_type,
     });
     res.status(201).json(mangaEntry);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMangaEntry = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const id = parseInt(req.params.id as string, 10);
+    const manga = MangaModel.delete(id);
+    if (!manga) {
+      res.status(404).json({ message: 'Manga not found' });
+      return;
+    }
+    res.status(200).json(manga);
   } catch (error) {
     next(error);
   }

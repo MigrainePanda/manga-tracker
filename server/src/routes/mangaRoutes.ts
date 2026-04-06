@@ -5,7 +5,7 @@ import {
   getMangaByID,
   createMangaEntry,
   // updateItem,
-  // deleteItem,
+  deleteMangaEntry,
 } from '../controllers/mangaController.ts';
 
 const router = Router();
@@ -15,6 +15,6 @@ router.get('/cover-images/:id', getMangaCoverImage);
 router.get('/:id', getMangaByID);
 router.post('/', createMangaEntry);
 // router.put('/:id', updateItem);
-// router.delete('/:id', deleteItem);
+router.delete('/:id', deleteMangaEntry);
 
 export default router;
