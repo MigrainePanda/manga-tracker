@@ -26,7 +26,7 @@ export default function SearchResultsListEntry({
       chapters: entry.chapters,
       volumes: entry.volumes,
       genres: entry.genres,
-      cover_image: entry.coverImage.medium,
+      cover_image: entry.coverImage.large,
       mime_type: 'image/jpeg',
     });
     if (response.error) {
@@ -51,12 +51,21 @@ export default function SearchResultsListEntry({
         Volumes - Chapters: {entry.volumes ?? 'N/A'} - {entry.chapters ?? 'N/A'}
       </p>
       <p>Genres: {entry.genres.join(', ')}</p>
+      {/* <div style={{ position: 'relative', width: '250px', height: '100px' }}>
+        <Image
+          src={entry.coverImage.large}
+          alt={`Cover of ${entry.title.romaji}`}
+          className="rounded-lg shadow-md"
+          unoptimized={true} // Needed for blob/data URLs
+          loading="lazy"
+        />
+      </div> */}
       <Image
-        src={entry.coverImage.medium}
+        src={entry.coverImage.large}
         alt={`Cover of ${entry.title.romaji}`}
-        width={93}
-        height={137}
-        className="rounded-lg shadow-md"
+        width={0}
+        height={0}
+        className="rounded-lg shadow-md w-28 h-auto"
         unoptimized={true} // Needed for blob/data URLs
         loading="lazy"
       />

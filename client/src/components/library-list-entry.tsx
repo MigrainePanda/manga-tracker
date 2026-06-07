@@ -90,10 +90,11 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
           <Image
             src={imageUrl}
             alt={`Cover of ${entry.titles[0]}`}
-            width={93}
-            height={137}
-            className="rounded-lg shadow-md"
+            width={0}
+            height={0}
+            className="rounded-lg shadow-md w-28 h-auto"
             unoptimized={true} // Needed for blob/data URLs
+            loading="lazy"
           />
         )}
         {!loading && !error && !imageUrl && <p>No image available</p>}

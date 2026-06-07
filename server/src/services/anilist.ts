@@ -1,7 +1,7 @@
 import config from '../config/config';
 import { AnilistSearchResultType } from '@shared/types';
 
-const receivedData = `
+const dataToReceive = `
   idMal
   title {
     romaji
@@ -56,7 +56,7 @@ const fetchAnilistDataBySearchString = async (
     query ($page: Int, $perPage: Int, $search: String, $type: MediaType, $format: MediaFormat) {
         Page (page: $page, perPage: $perPage) {
             media (search: $search, type: $type, format: $format) {
-                ${receivedData}
+                ${dataToReceive}
             }
         }
     }
@@ -78,7 +78,7 @@ const fetchAnilistDataByGenre = async (genre: string, perPage?: number) => {
     query ($page: Int, $perPage: Int, $genre: String, $type: MediaType, $format: MediaFormat) {
         Page (page: $page, perPage: $perPage) {
             media (genre: $genre, type: $type, format: $format) {
-                ${receivedData}
+                ${dataToReceive}
             }
         }
     }
