@@ -9,12 +9,21 @@ import { useState } from 'react';
 
 type SearchResultsListEntryProps = {
   entry: AnilistSearchResultType;
+  inLibrary: boolean;
 };
 
 export default function SearchResultsListEntry({
   entry,
+  inLibrary,
 }: SearchResultsListEntryProps) {
   const [errMsg, setErrMsg] = useState<string>('');
+  const [action, setAction] = useState(
+    !inLibrary ? (
+      <Button onClick={handleClick}>Add to library</Button>
+    ) : (
+      <p>In library</p>
+    ),
+  );
 
   async function handleClick() {
     const response = await handleRequest('POST', '/manga', {
@@ -30,10 +39,13 @@ export default function SearchResultsListEntry({
       mime_type: 'image/jpeg',
     });
     if (response.error) {
+      const data = response.data as { message: string };
       console.error(response.data);
-      setErrMsg(response.data as string);
+      setErrMsg(data.message as string);
+      return;
     }
     useMangaStore.getState().refreshEntries();
+    setAction(<p>In library</p>);
   }
 
   return (
@@ -51,15 +63,6 @@ export default function SearchResultsListEntry({
         Volumes - Chapters: {entry.volumes ?? 'N/A'} - {entry.chapters ?? 'N/A'}
       </p>
       <p>Genres: {entry.genres.join(', ')}</p>
-      {/* <div style={{ position: 'relative', width: '250px', height: '100px' }}>
-        <Image
-          src={entry.coverImage.large}
-          alt={`Cover of ${entry.title.romaji}`}
-          className="rounded-lg shadow-md"
-          unoptimized={true} // Needed for blob/data URLs
-          loading="lazy"
-        />
-      </div> */}
       <Image
         src={entry.coverImage.large}
         alt={`Cover of ${entry.title.romaji}`}
@@ -69,7 +72,7 @@ export default function SearchResultsListEntry({
         unoptimized={true} // Needed for blob/data URLs
         loading="lazy"
       />
-      <Button onClick={handleClick}>Add to library</Button>
+      {action}
       {errMsg && <p>{errMsg}</p>}
     </div>
   );

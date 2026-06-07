@@ -1,7 +1,8 @@
 'use client';
 
-import { SubmitEvent, useState } from 'react';
+import { SubmitEvent, useState, useEffect } from 'react';
 import handleRequest from '@/lib/apiUtils';
+import { useMangaStore } from '@/store/useMangaStore';
 import { AnilistSearchResultType } from '@shared/types';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ export default function SearchResultsList() {
   const [searchResults, setSearchResults] = useState<AnilistSearchResultType[]>(
     [],
   );
+  const library = useMangaStore((state) => state.entries);
 
   async function handleSubmit(e: SubmitEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
@@ -30,6 +32,10 @@ export default function SearchResultsList() {
     );
     setSearchResults(response.data as AnilistSearchResultType[]);
   }
+
+  useEffect(() => {
+    useMangaStore.getState().refreshEntries();
+  }, []);
 
   return (
     <div className="flex grow flex-col items-start justify-start p-5 gap-7">
@@ -60,7 +66,13 @@ export default function SearchResultsList() {
             entry: AnilistSearchResultType,
             i: number,
           ) {
-            return <SearchResultsListEntry entry={entry} key={i} />;
+            return (
+              <SearchResultsListEntry
+                key={i}
+                entry={entry}
+                inLibrary={library.some((ele) => ele.idMal === entry.idMal)}
+              />
+            );
           })}
       </div>
     </div>
