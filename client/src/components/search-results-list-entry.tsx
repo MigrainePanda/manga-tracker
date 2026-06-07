@@ -58,6 +58,7 @@ export default function SearchResultsListEntry({
         height={137}
         className="rounded-lg shadow-md"
         unoptimized={true} // Needed for blob/data URLs
+        loading="lazy"
       />
       <Button onClick={handleClick}>Add to library</Button>
       {errMsg && <p>{errMsg}</p>}

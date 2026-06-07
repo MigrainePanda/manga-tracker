@@ -16,6 +16,7 @@ const receivedData = `
   genres
   coverImage {
     medium
+    large
   }
 `;
 
@@ -39,7 +40,9 @@ const fetchAnilistData = async (query: string, variables: object) => {
   const res = media.map((entry: AnilistSearchResultType) => {
     return {
       ...entry,
-      cover_image: entry.coverImage.medium,
+      // for some reason the anilist api maps medium -> small, large -> medium
+      // since I wanted medium size I'm using large (06/06/2026)
+      cover_image: entry.coverImage.large,
     };
   });
   return res;

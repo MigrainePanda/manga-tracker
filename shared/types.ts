@@ -21,6 +21,7 @@ export interface AnilistSearchResultType {
   genres: string[];
   coverImage: {
     medium: string;
+    large: string;
   };
 }
 
