@@ -48,7 +48,7 @@ export default function SearchResultsListEntry({
       </p>
       <p>Status: {entry.status}</p>
       <p>
-        Volumes/Chapters: {entry.volumes ?? 'N/A'}/{entry.chapters ?? 'N/A'}
+        Volumes - Chapters: {entry.volumes ?? 'N/A'} - {entry.chapters ?? 'N/A'}
       </p>
       <p>Genres: {entry.genres.join(', ')}</p>
       <Image
