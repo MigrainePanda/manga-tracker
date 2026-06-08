@@ -24,6 +24,7 @@ export default function SearchResultsListEntry({
       <p>In library</p>
     ),
   );
+  const refreshEntries = useMangaStore((s) => s.refreshEntries);
 
   async function handleClick() {
     const base_owned_volumes = Object.fromEntries(
@@ -48,7 +49,7 @@ export default function SearchResultsListEntry({
       setErrMsg(data.message as string);
       return;
     }
-    useMangaStore.getState().refreshEntries();
+    refreshEntries();
     setAction(<p>In library</p>);
   }
 

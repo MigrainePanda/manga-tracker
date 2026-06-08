@@ -19,7 +19,8 @@ export default function SearchResultsList() {
   const [searchResults, setSearchResults] = useState<AnilistSearchResultType[]>(
     [],
   );
-  const library = useMangaStore((state) => state.entries);
+  const library = useMangaStore((s) => s.entries);
+  const refreshEntries = useMangaStore((s) => s.refreshEntries);
 
   async function handleSubmit(e: SubmitEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
@@ -34,15 +35,16 @@ export default function SearchResultsList() {
   }
 
   useEffect(() => {
-    useMangaStore.getState().refreshEntries();
-  }, []);
+    refreshEntries();
+  }, [refreshEntries]);
 
   return (
     <div className="flex grow flex-col items-start justify-start p-5 gap-7">
+      <h1>Find Manga</h1>
       <form onSubmit={handleSubmit}>
         <Field>
           <FieldLabel htmlFor="input-group-search">
-            Search Anilist for Manga
+            Search Anilist by Title
           </FieldLabel>
           <Field orientation={'horizontal'}>
             <InputGroup>

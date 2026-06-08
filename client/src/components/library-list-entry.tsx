@@ -16,6 +16,7 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [ownedVolumes, setOwnedVolumes] = useState(entry.owned_volumes);
+  const refreshEntries = useMangaStore((s) => s.refreshEntries);
 
   useEffect(() => {
     let abortController: AbortController;
@@ -70,7 +71,7 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
       console.error(response.error);
       return;
     }
-    useMangaStore.getState().refreshEntries();
+    refreshEntries();
   }
 
   return (
