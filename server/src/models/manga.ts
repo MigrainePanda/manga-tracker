@@ -17,7 +17,7 @@ const MangaModel = {
     const db = getDb();
     const dbRows = db
       .prepare(
-        `SELECT id, idMal, titles, type, format, status, chapters, volumes, genres FROM ${DB_NAME} ORDER BY created_at ASC`,
+        `SELECT id, idMal, titles, type, format, status, chapters, volumes, owned_volumes, genres FROM ${DB_NAME} ORDER BY created_at ASC`,
       )
       .all() as MangaDBRow[] | undefined;
     if (!dbRows) {
@@ -74,13 +74,14 @@ const MangaModel = {
 
   create(data: MangaNonDate) {
     const db = getDb();
-    const query = `INSERT INTO ${DB_NAME} (idMal, titles, type, format, status, chapters, volumes, genres, cover_image, mime_type) 
-                   VALUES (:idMal, :titles, :type, :format, :status, :chapters, :volumes, :genres, :cover_image, :mime_type)`;
+    const query = `INSERT INTO ${DB_NAME} (idMal, titles, type, format, status, chapters, volumes, owned_volumes, genres, cover_image, mime_type) 
+                   VALUES (:idMal, :titles, :type, :format, :status, :chapters, :volumes, :owned_volumes, :genres, :cover_image, :mime_type)`;
     const stmt = db.prepare(query);
     const info = stmt.run({
       ...data,
       titles: JSON.stringify(data.titles),
       genres: JSON.stringify(data.genres),
+      owned_volumes: JSON.stringify(data.owned_volumes),
     });
     console.log(info);
   },

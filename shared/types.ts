@@ -39,6 +39,7 @@ export interface MangaNonDate {
   status: string;
   chapters: number | null;
   volumes: number | null;
+  owned_volumes: Record<number, number>;
   genres: string[];
   cover_image: Buffer;
   mime_type: string;

@@ -27,6 +27,7 @@ function initializeSchema() {
       status TEXT NOT NULL,
       chapters INTEGER,
       volumes INTEGER,
+      owned_volumes TEXT,
       genres TEXT[] NOT NULL,
       cover_image BUFFER NOT NULL,
       mime_type TEXT NOT NULL,

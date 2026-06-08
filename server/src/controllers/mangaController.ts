@@ -73,6 +73,7 @@ export const createMangaEntry = (
       status,
       chapters,
       volumes,
+      owned_volumes,
       genres,
       cover_image,
       mime_type,
@@ -87,7 +88,7 @@ export const createMangaEntry = (
         .json(`Manga with MAL ID ${idMal} is already in the database`);
       return;
     }
-    const mangaEntry = MangaModel.create({
+    MangaModel.create({
       idMal: Number(idMal),
       titles: Array.isArray(titles) ? titles : JSON.parse(titles),
       type,
@@ -95,11 +96,12 @@ export const createMangaEntry = (
       status,
       chapters: chapters ? Number(chapters) : null,
       volumes: volumes ? Number(volumes) : null,
+      owned_volumes,
       genres: Array.isArray(genres) ? genres : JSON.parse(genres),
       cover_image: Buffer.from(cover_image),
       mime_type,
     });
-    res.status(201).json(mangaEntry);
+    res.status(201).json();
   } catch (error) {
     next(error);
   }

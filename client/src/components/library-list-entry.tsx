@@ -15,6 +15,7 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [ownedVolumes, setOwnedVolumes] = useState(entry.owned_volumes);
 
   useEffect(() => {
     let abortController: AbortController;
@@ -67,6 +68,7 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
     const response = await handleRequest('DELETE', `/manga/${entry.id}`);
     if (response.error) {
       console.error(response.error);
+      return;
     }
     useMangaStore.getState().refreshEntries();
   }
@@ -83,22 +85,50 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
         Volumes - Chapters: {entry.volumes ?? 'N/A'} - {entry.chapters ?? 'N/A'}
       </p>
       <p>Genres: {entry.genres.join(', ')}</p>
-      <span>
-        {loading && <p>Loading...</p>}
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        {!loading && !error && imageUrl && (
-          <Image
-            src={imageUrl}
-            alt={`Cover of ${entry.titles[0]}`}
-            width={0}
-            height={0}
-            className="rounded-lg shadow-md w-28 h-auto"
-            unoptimized={true} // Needed for blob/data URLs
-            loading="lazy"
-          />
-        )}
-        {!loading && !error && !imageUrl && <p>No image available</p>}
-      </span>
+      {/* <p>{JSON.stringify(entry, null, 2)}</p> */}
+
+      <div className="mt-3 mb-4 flex gap-5">
+        {/* img */}
+        <span className="min-w-fit">
+          {loading && <p>Loading...</p>}
+          {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+          {!loading && !error && imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={`Cover of ${entry.titles[0]}`}
+              width={0}
+              height={0}
+              className="rounded-lg shadow-md w-28 h-auto"
+              unoptimized={true} // Needed for blob/data URLs
+              loading="lazy"
+            />
+          )}
+          {!loading && !error && !imageUrl && <p>No image available</p>}
+        </span>
+
+        {/* volumes */}
+        <div>
+          <p>Owned Volumes</p>
+          <div className="w-full flex gap-1 flex-wrap ">
+            {Object.entries(ownedVolumes).map(([key, val]) => (
+              <Button
+                key={key}
+                className={`w-[9%] ${val ? 'bg-blue-950 text-white' : ''}`}
+                onClick={() => {
+                  setOwnedVolumes({
+                    ...ownedVolumes,
+                    [Number(key)]: Number(!ownedVolumes[Number(key)]),
+                  });
+                }}
+              >
+                {key}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* action button */}
       <Button onClick={handleClick}>Remove from library</Button>
     </div>
   );

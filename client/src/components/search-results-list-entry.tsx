@@ -26,6 +26,9 @@ export default function SearchResultsListEntry({
   );
 
   async function handleClick() {
+    const base_owned_volumes = Object.fromEntries(
+      Array.from({ length: entry.volumes || 0 }, (_, i) => [i + 1, 0]),
+    );
     const response = await handleRequest('POST', '/manga', {
       idMal: entry.idMal,
       titles: [entry.title.romaji, entry.title.english, entry.title.native],
@@ -34,6 +37,7 @@ export default function SearchResultsListEntry({
       status: entry.status,
       chapters: entry.chapters,
       volumes: entry.volumes,
+      owned_volumes: base_owned_volumes,
       genres: entry.genres,
       cover_image: entry.coverImage.large,
       mime_type: 'image/jpeg',

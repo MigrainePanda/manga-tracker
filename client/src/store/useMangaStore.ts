@@ -21,6 +21,10 @@ export const useMangaStore = create<MangaState>((set) => ({
           typeof item.titles === 'string'
             ? JSON.parse(item.titles)
             : item.titles,
+        owned_volumes:
+          typeof item.owned_volumes === 'string'
+            ? JSON.parse(item.owned_volumes)
+            : item.owned_volumes,
         genres:
           typeof item.genres === 'string'
             ? JSON.parse(item.genres)
