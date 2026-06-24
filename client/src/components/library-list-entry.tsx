@@ -6,6 +6,7 @@ import { MangaType } from '@shared/types';
 import { Button } from './ui/button';
 import Image from 'next/image';
 import { useMangaStore } from '@/store/useMangaStore';
+import LibraryListEntryVolume from './library-list-entry-volume';
 
 type LibraryListEntryProps = {
   entry: MangaType;
@@ -65,7 +66,7 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
     };
   }, [entry.id, imageUrl]);
 
-  async function handleClick() {
+  async function onClickHandleRemove() {
     const response = await handleRequest('DELETE', `/manga/${entry.id}`);
     if (response.error) {
       console.error(response.error);
@@ -111,26 +112,20 @@ export default function LibraryListEntry({ entry }: LibraryListEntryProps) {
         <div>
           <p>Owned Volumes</p>
           <div className="w-full flex gap-1 flex-wrap ">
-            {Object.entries(ownedVolumes).map(([key, val]) => (
-              <Button
-                key={key}
-                className={`w-[9%] ${val ? 'bg-blue-950 text-white' : ''}`}
-                onClick={() => {
-                  setOwnedVolumes({
-                    ...ownedVolumes,
-                    [Number(key)]: Number(!ownedVolumes[Number(key)]),
-                  });
-                }}
-              >
-                {key}
-              </Button>
+            {Object.entries(ownedVolumes).map((pair) => (
+              <LibraryListEntryVolume
+                entry={entry}
+                setOwnedVolumes={setOwnedVolumes}
+                pair={pair}
+                key={pair[0]}
+              />
             ))}
           </div>
         </div>
       </div>
 
       {/* action button */}
-      <Button onClick={handleClick}>Remove from library</Button>
+      <Button onClick={onClickHandleRemove}>Remove from library</Button>
     </div>
   );
 }

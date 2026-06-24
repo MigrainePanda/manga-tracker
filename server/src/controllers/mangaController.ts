@@ -124,3 +124,22 @@ export const deleteMangaEntry = (
     next(error);
   }
 };
+
+export const updateCollection = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { new_owned_volumes } = req.body;
+    const id = parseInt(req.params.id as string, 10);
+    const manga = MangaModel.updateCollection(id, new_owned_volumes);
+    if (!manga) {
+      res.status(404).json({ message: 'Manga not found' });
+      return;
+    }
+    res.status(200).json(manga);
+  } catch (error) {
+    next(error);
+  }
+};

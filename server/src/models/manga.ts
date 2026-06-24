@@ -92,6 +92,18 @@ const MangaModel = {
     const res = stmt.run({ id });
     return res;
   },
+
+  updateCollection(id: number, new_owned_volumes: object): object {
+    const db = getDb();
+    const stmt = db.prepare(
+      'UPDATE manga SET owned_volumes = :new_owned_volumes where id = :id',
+    );
+    const res = stmt.run({
+      id,
+      new_owned_volumes: JSON.stringify(new_owned_volumes),
+    });
+    return res;
+  },
 };
 
 export type { MangaType };
